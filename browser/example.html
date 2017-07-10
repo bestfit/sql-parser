@@ -1,8 +1,25 @@
 <html>
+	
+	<body>
+		<div>
+			<input type="textarea" name="" id="str_sql" style="width: 50%; margin-bottom: 50px;">
+		</div>
+		<div>		
+			<textarea id="str_json"  style="width: 50%; height: 150px; margin-bottom: 50px;"></textarea>	
+		</div>
+	</body>
   <script src="./sql-parser.js" type="text/javascript" charset="utf-8"></script>
+  <script type="text/javascript" src="./jquery-1.10.2.min.js"></script>
   <script type="text/javascript" charset="utf-8">
-    console.log(
-      SQLParser.parse('select * from test where a = 1 and foo = "bar"').toString()
-    )
+  	$(document).ready(function(){
+  		$('#str_sql').on('change', function() {
+  			var sql_str = $('#str_sql').val().toString(); alert(sql_str);
+			var json_sql = SQLParser.parse(sql_str).toString(); alert(SQLParser.parse(sql_str));
+			$('#str_json').html(json_sql);
+  		});  		
+	});
+    // console.log(
+    //   SQLParser.parse('SELECT DISTINCT Country FROM Customers').toString()
+    // )
   </script>
 </html>

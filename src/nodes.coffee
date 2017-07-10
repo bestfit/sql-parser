@@ -162,3 +162,21 @@ exports.Star = class Star
   constructor: () -> null
   toString: -> '*'
   star: true
+
+exports.Alias = class Alias
+  constructor: (@name, @subSelect) -> null
+  toString: ->
+    ret = "#{@name} AS\n" + "#{@subSelect}\n"
+
+exports.With = class With
+  constructor: (@aliases) -> 
+    @select = null    
+  toString: -> 
+    ret = ["WITH\n #{@aliases}\n"]
+    ret.push indent(@select.toString()) if @select
+    ret.join("\n")
+
+exports.Insert = class Insert
+  constructor: (@source, @fields, @values) -> null
+  toString: ->
+    ret = "INSERT INTO #{@source}\n #{@fields.join(', ')} VALUE #{@values.join(', ')}"
