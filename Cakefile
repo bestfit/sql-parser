@@ -23,8 +23,19 @@ task 'build:compile', 'Compile all coffee files to js',
   build
 
 task 'build:parser', 'rebuild the Jison parser', ->
+  code = ''
+
+  code_parser = "errStr = 'Parse error on line ' + (yylineno + 1) + ': Unexpected ' + (symbol == EOF ? 'end of input' : '\\\'' + (this.terminals_[symbol] || symbol) + '\\\'');"
+
+  code_parser_revision = "var position = 0; for (var index = 0; index < lexer.pos - 1; index++) { position += lexer.tokens[index][1].length;} errStr = '1 error was found during analysis. An expression was expected. (near \"' + lexer.yytext + '\" at position ' + (position + 1) + ')';"
+
   parser = require('./src/grammar').parser
-  fs.writeFileSync 'lib/compiled_parser.js', parser.generate()
+  code += parser.generate()  
+  
+  code = code.split(code_parser).join(code_parser_revision)
+
+
+  fs.writeFileSync 'lib/compiled_parser.js', code
 
 task 'build:browser', 'Build a single JS file suitable for use in the browser', ->
   code = ''

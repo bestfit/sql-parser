@@ -18,6 +18,8 @@ grammar =
   Query: [
     o "SelectQuery"
     o "SelectQuery Unions",                                -> $1.unions = $2; $1
+    o "InsertQuery"
+    o "WithQuery"
   ]
 
   SelectQuery: [
@@ -39,6 +41,39 @@ grammar =
   Select: [
     o 'SelectClause'
     o 'SelectClause WhereClause',                         -> $1.where = $2; $1
+  ]
+
+  InsertQuery: [
+    o 'Insert'
+    o 'InsertClause'                                      
+  ]
+
+  InsertClause: [
+    o 'INSERT INTO Table LEFT_PAREN Fields RIGHT_PAREN VALUE LEFT_PAREN Values RIGHT_PAREN',            -> new Insert($3, $5, $9)         
+  ]
+
+  Values: [
+    o 'Value',                                            -> [$1]
+    o 'Values SEPARATOR Value',                           -> $1.concat($3)
+  ]
+
+  WithQuery: [
+    o 'With'
+    o 'WithClause'
+    o 'WithClause SelectClause',                          -> $1.select = $2; $1                           
+  ]
+
+  WithClause: [
+    o 'WITH Aliases',                                     -> new With($2)
+  ]
+
+  Aliases: [
+    o 'Alias',                                            -> [$1]
+    o 'Aliases SEPARATOR Alias',                          -> $1.concat($3)
+  ]
+
+  Alias: [
+    o 'Literal AS LEFT_PAREN Query RIGHT_PAREN',          -> new Alias($1, $4)
   ]
 
   SelectClause: [
