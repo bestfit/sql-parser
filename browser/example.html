@@ -13,8 +13,8 @@
   <script type="text/javascript" charset="utf-8">
   	$(document).ready(function(){
   		$('#str_sql').on('change', function() {
-  			var sql_str = $('#str_sql').val().toString(); alert(sql_str);
-			var json_sql = SQLParser.parse(sql_str).toString(); alert(SQLParser.parse(sql_str));
+  			var sql_str = $('#str_sql').val().toString();
+			var json_sql = SQLParser.parse(sql_str).toString();
 			$('#str_json').html(json_sql);
   		});  		
 	});
