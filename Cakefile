@@ -27,7 +27,7 @@ task 'build:parser', 'rebuild the Jison parser', ->
 
   code_parser = "errStr = 'Parse error on line ' + (yylineno + 1) + ': Unexpected ' + (symbol == EOF ? 'end of input' : '\\\'' + (this.terminals_[symbol] || symbol) + '\\\'');"
 
-  code_parser_revision = "var position = 0; for (var index = 0; index < lexer.pos - 1; index++) { position += lexer.tokens[index][1].length;} errStr = '1 error was found during analysis. An expression was expected. (near \"' + lexer.yytext + '\" at position ' + (position + 1) + ')';"
+  code_parser_revision = ""var position = 0; var errWord = lexer.yytext == '' ? yytext: lexer.yytext; for (var index = 0; index < lexer.pos - 1; index++) { position += lexer.tokens[index][1].length;} errStr = 'An error was occurred while parsing. An expression was expected. (near \"' + errWord + '\" at position ' + (position + 1) + ')';"
 
   parser = require('./src/grammar').parser
   code += parser.generate()  
